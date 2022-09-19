@@ -1,29 +1,19 @@
-#!/usr/bin/python3
-"""Factorize as many numbers as possible into a product of two smaller numbers.
-"""
+#!/usr/bin/env bash
 
-import sys
-import math
+# read from file given as argv[1] ($1) and print factors for each num in file
 
 
-try:
-    file_object = open(sys.argv[1], "r")
-except IndexError:
-    print("Usage: ./factors <file>")
-    exit()
 
-numbers = file_object.readlines()
-file_object.close()
+FILE=$1
 
-for num in numbers:
-    number = int(num.rstrip("\n"))
-    for i in range(2, int(math.sqrt(number)) + 1):
-        if number % i == 0:
-            q = i
-            break
-    for j in range(2, int(math.sqrt(number)) + 1):
-        if (number // i) * q == number:
-            p = number // i
-            break
 
-    print("{}={}*{}".format(number, p, q))
+
+while read NUM
+
+do
+
+    factors=($(factor $NUM))
+
+    echo "$NUM=$(($NUM/${factors[1]}))*${factors[1]}"
+
+done < $FILE
